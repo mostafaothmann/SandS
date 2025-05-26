@@ -95,4 +95,6 @@ class PlateController extends Controller
         $plate = Plate::findOrFail($id)->delete();
         return response()->json(null, Response::HTTP_OK);
     }
+
+    
 }

@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Hash;
 
 class ChefTableSeeder extends Seeder
 {
-   
- 
+
+
 
     public function run(): void
     {
         DB::table('chefs')->delete();
-        
+
         $chefs = [
             [
                 'user_name' => 'Tammas',
@@ -23,7 +23,7 @@ class ChefTableSeeder extends Seeder
                 'three_name' => 'Smith',
                 'image_path' => 'images/chef1.jpg',
                 'email' => 'chef1@example.com',
-                'password' => '123',
+                'password' => bcrypt('123'), // تشفير كلمة المرور
                 'birth_date' => '1980-01-01',
                 'mobile_number' => '1234567890',
                 'cv_path' => 'cvs/chef1.pdf',
@@ -37,7 +37,7 @@ class ChefTableSeeder extends Seeder
                 'three_name' => 'Johnson',
                 'image_path' => 'images/chef2.jpg',
                 'email' => 'chef2@example.com',
-                'password' => '123',
+                'password' => bcrypt('123'), // تشفير كلمة المرور
                 'birth_date' => '1985-02-02',
                 'mobile_number' => '0987654321',
                 'cv_path' => 'cvs/chef2.pdf',
@@ -51,7 +51,7 @@ class ChefTableSeeder extends Seeder
                 'three_name' => 'Williams',
                 'image_path' => 'images/chef3.jpg',
                 'email' => 'chef3@example.com',
-                'password' => '123',
+                'password' => bcrypt('123'), // تشفير كلمة المرور
                 'birth_date' => '1990-03-03',
                 'mobile_number' => '1122334455',
                 'cv_path' => 'cvs/chef3.pdf',
@@ -65,7 +65,7 @@ class ChefTableSeeder extends Seeder
                 'three_name' => 'Davis',
                 'image_path' => 'images/chef4.jpg',
                 'email' => 'chef4@example.com',
-                'password' => '123',
+                'password' => bcrypt('123'), // تشفير كلمة المرور
                 'birth_date' => '1975-04-04',
                 'mobile_number' => '5566778899',
                 'cv_path' => 'cvs/chef4.pdf',

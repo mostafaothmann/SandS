@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Middleware\LoginAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChefController;
@@ -31,22 +33,22 @@ Route::put('/vehicles/{id}', [VehicleController::class, 'update']);
 Route::delete('/vehicles/{id}', [VehicleController::class, 'destroy']);
 
 // Type
-Route::get('/type', [TypeController::class,'index']);
-Route::post('/type', [TypeController::class,'store']);
-Route::get('/type/{id}', [TypeController::class,'show']);
+Route::get('/type', [TypeController::class, 'index']);
+Route::post('/type', [TypeController::class, 'store']);
+Route::get('/type/{id}', [TypeController::class, 'show']);
 Route::put('/type/{id}', [TypeController::class, 'update']);
 Route::delete('/type/{id}', [TypeController::class, 'destroy']);
 
 //Ingredients
-Route::get('/Ingredients',[IngredientsController::class,'index']);
-Route::post('/Ingredients',[IngredientsController::class,'store']);
-Route::put('/Ingredients/{id}',[IngredientsController::class,'update']);
-Route::get('/Ingredients/{id}',[IngredientsController::class,'show']);
-Route::delete('/Ingredients/{id}',[IngredientsController::class,'destroy']);
+Route::get('/Ingredients', [IngredientsController::class, 'index']);
+Route::post('/Ingredients', [IngredientsController::class, 'store']);
+Route::put('/Ingredients/{id}', [IngredientsController::class, 'update']);
+Route::get('/Ingredients/{id}', [IngredientsController::class, 'show']);
+Route::delete('/Ingredients/{id}', [IngredientsController::class, 'destroy']);
 
 // state
-Route::get('/State',[StateController::class,'index']);
-Route::get('/State/{id}',[StateController::class,'show']);
+Route::get('/State', [StateController::class, 'index']);
+Route::get('/State/{id}', [StateController::class, 'show']);
 
 // Chef
 Route::get('/chefs', [ChefController::class, 'index']);
@@ -54,6 +56,12 @@ Route::post('/chefs', [ChefController::class, 'store']);
 Route::get('/chefs/{id}', [ChefController::class, 'show']);
 Route::put('/chefs/{id}', [ChefController::class, 'update']);
 Route::delete('/chefs/{id}', [ChefController::class, 'destroy']);
+Route::post('/chefs/login', [ChefController::class, 'login']);
+
+Route::group(['middleware' => ['auth.chef']], function () {
+    // Route::get('/chef/dashboard', [ChefController::class, 'dashboard']);
+
+});
 
 //Distributer
 Route::get('/distributer', [DistributerController::class, 'index']);
@@ -82,7 +90,11 @@ Route::post('/price', [PricesController::class, 'store']);
 Route::get('/price/{id}', [PricesController::class, 'show']);
 Route::put('/price/{id}', [PricesController::class, 'update']);
 Route::delete('/price/{id}', [PricesController::class, 'destroy']);
-Route::get('plates/{plate_id}/prices', [PricesController::class, 'getPricesByPlateId']);
+Route::get('plate/{plate_id}/prices', [PricesController::class, 'getPricesByPlateId']);
+Route::get('/plate/{plateId}/comments', [OrderController::class, 'getCommentsByPlate']);
+Route::get('/plate/{plateId}/average-rating', [OrderController::class, 'averageRating']);
+Route::get('/top-rated-plates', [OrderController::class, 'topRatedPlates']);
+Route::get('/top-rated-chef', [OrderController::class, 'topRatedChefs']);
 
 //SUB_TYPE
 Route::get('/subtype', [SubTypeController::class, 'index']);
@@ -105,6 +117,7 @@ Route::get('/plateIngredients/{id}', [PlateIngredientsController::class, 'show']
 Route::put('/plateIngredients/{id}', [PlateIngredientsController::class, 'update']);
 Route::delete('/plateIngredients/{id}', [PlateIngredientsController::class, 'destroy']);
 
+
 //Oreder
 Route::get('/order', [OrderController::class, 'index']);
 Route::post('/order', [OrderController::class, 'store']);
@@ -113,10 +126,9 @@ Route::put('/order/{id}', [OrderController::class, 'update']);
 Route::delete('/order/{id}', [OrderController::class, 'destroy']);
 
 
-
-
-
-
-// Route::middleware('auth:sanctum')->group(function () {
-  
-// });
+//admin
+Route::post('/admin/login', [AdminController::class, 'login']);
+Route::group(['middleware' => ['auth:admin']], function () {
+    Route::post('/admin/logout', [AdminController::class, 'logout']);
+    Route::get('/admin/profile', [AdminController::class, 'profile']);
+});

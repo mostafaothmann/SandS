@@ -9,7 +9,7 @@ class CreateChefsTable extends Migration
     {
         Schema::create('chefs', function (Blueprint $table) {
             $table->id('chef_id');
-            $table->string('user_name', 255);
+            $table->string('username', 255);
             $table->string('first_name', 255);
             $table->string('second_name', 255);
             $table->string('three_name', 255);

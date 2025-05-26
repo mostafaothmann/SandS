@@ -36,11 +36,22 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
+        'api' => [
+            'driver' => 'jwt',
             'provider' => 'users',
         ],
+
+        'admin' => [
+            'driver' => 'jwt', // أو 'session' إذا كنت تفضل ذلك
+            'provider' => 'admin',
+        ],
+
+        'chef' => [
+            'driver' => 'jwt', // أو 'session' إذا كنت تفضل ذلك
+            'provider' => 'chef',
+        ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -63,6 +74,14 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+        'chef' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Chef::class,
         ],
 
         // 'users' => [

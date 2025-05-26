@@ -6,6 +6,9 @@ use App\Http\Resources\ChefResource;
 use Illuminate\Http\Request;
 use App\Models\Chef;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ChefController extends Controller
 {
@@ -46,12 +49,8 @@ class ChefController extends Controller
     public function show(string $id)
     {
 
-        $chef = Chef::where('chef_id', $id)->first();
-
-        if (!$chef) {
-            return response()->json(['message' => 'Chef not found'], 404);
-        }
-
+        // $chef = Chef::where('chef_id', $id)->first();
+        $chef = Chef::findOrFail($id);
         return new ChefResource($chef);
     }
 
@@ -63,13 +62,8 @@ class ChefController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $chef = Chef::where('chef_id', $id)->first();
-
-        if (!$chef) {
-            response()->json(['message' => 'Not Found'], 404);
-        }
-
-         $request->validate([
+        $chef= Chef::findOrFail($id);
+        $request->validate([
             'user_name' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
             'second_name' => 'required|string|max:255',
@@ -83,9 +77,6 @@ class ChefController extends Controller
             'location' => 'required|string|max:255',
             'state_id' => 'required|exists:states,state_id',
         ]);
-
-
-
         $chef->update($request->only([
             'user_name',
             'first_name',
@@ -100,8 +91,6 @@ class ChefController extends Controller
             'location',
             'state_id'
         ]));
-
-
         return response()->json($chef, Response::HTTP_OK);
     }
 
@@ -110,5 +99,26 @@ class ChefController extends Controller
         $chef = Chef::findOrFail($id);
         $chef->delete();
         return response()->json(null, 204);
+    }
+
+    public function login(Request $request)
+    {
+
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        $chef = Chef::findOrFail( $request->username );
+
+        if (!$chef || !Hash::check($request->password, $chef->password)) {
+
+            $token = JWTAuth::fromUser($chef);
+
+            return response()->json(['token' => $token]);
+        }
+
+
+        return response()->json(['error' => $chef], 401);
     }
 }
