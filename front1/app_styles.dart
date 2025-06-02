@@ -23,12 +23,7 @@ class AppFonts {
     decoration: TextDecoration.underline,
   );
 
-  static const TextStyle bigTitleunderline = TextStyle(
-    fontFamily: family,
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    decoration: TextDecoration.underline,
-  );
+ 
   
   static const TextStyle subsub = TextStyle(
     fontFamily: family,
